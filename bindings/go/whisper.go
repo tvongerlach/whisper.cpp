@@ -20,7 +20,7 @@ extern bool callEncoderBegin(void* user_data);
 // Text segment callback
 // Called on every newly generated text segment
 // Use the whisper_full_...() functions to obtain the text segments
-static void whisper_new_segment_cb(struct whisper_context* ctx, int n_new, void* user_data) {
+static void whisper_new_segment_cb(struct whisper_context* ctx, struct whisper_state* state, int n_new, void* user_data) {
     if(user_data != NULL && ctx != NULL) {
         callNewSegment(user_data, n_new);
     }
@@ -29,7 +29,7 @@ static void whisper_new_segment_cb(struct whisper_context* ctx, int n_new, void*
 // Encoder begin callback
 // If not NULL, called before the encoder starts
 // If it returns false, the computation is aborted
-static bool whisper_encoder_begin_cb(struct whisper_context* ctx, void* user_data) {
+static bool whisper_encoder_begin_cb(struct whisper_context* ctx, struct whisper_state* state, void* user_data) {
     if(user_data != NULL && ctx != NULL) {
         return callEncoderBegin(user_data);
     }
@@ -356,7 +356,7 @@ func (ctx *Context) Whisper_full_get_token_id(segment int, token int) Token {
 
 // Get token data for the specified token in the specified segment.
 // This contains probabilities, timestamps, etc.
-func (ctx *Context) whisper_full_get_token_data(segment int, token int) TokenData {
+func (ctx *Context) Whisper_full_get_token_data(segment int, token int) TokenData {
 	return TokenData(C.whisper_full_get_token_data((*C.struct_whisper_context)(ctx), C.int(segment), C.int(token)))
 }
 
@@ -406,4 +406,12 @@ func callEncoderBegin(user_data unsafe.Pointer) C.bool {
 		}
 	}
 	return true
+}
+
+func (t TokenData) T0() int64 {
+	return int64(t.t0)
+}
+
+func (t TokenData) T1() int64 {
+	return int64(t.t1)
 }

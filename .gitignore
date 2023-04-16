@@ -1,6 +1,8 @@
 *.o
 *.a
 .cache/
+.coreml/
+.test/
 .vs/
 .vscode/
 .DS_Store
@@ -10,6 +12,7 @@ build-em/
 build-debug/
 build-release/
 build-static/
+build-no-accel/
 build-sanitize-addr/
 build-sanitize-thread/
 
@@ -17,6 +20,7 @@ build-sanitize-thread/
 /stream
 /command
 /talk
+/talk-llama
 /bench
 
 arm_neon.h
@@ -31,3 +35,7 @@ examples/whisper.objc/whisper.objc.xcodeproj/xcuserdata/
 examples/whisper.objc/whisper.objc.xcodeproj/project.xcworkspace/xcuserdata
 
 extra/bench-gg.txt
+
+models/*.mlmodel
+models/*.mlmodelc
+models/*.mlpackage
